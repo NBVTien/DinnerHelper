@@ -1,0 +1,25 @@
+@host=http://localhost:5085
+
+### Login
+// @no-log
+GET {{host}}/auth/login
+Accept: application/json
+Content-Type: application/json
+
+{
+  "email": "vuongtiennguyenbui@gmail.com",
+  "password": "123"
+}
+
+### Register
+// @no-log
+GET {{host}}/auth/register
+Accept: application/json
+Content-Type: application/json
+
+{
+  "firstName": "Vuong Tien",
+  "lastName": "Nguyen Bui",
+  "email": "vuongtiennguyenbui@gmail.com",
+  "password": "123"
+}
