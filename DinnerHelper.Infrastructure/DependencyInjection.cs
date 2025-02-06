@@ -1,6 +1,8 @@
 using DinnerHelper.Application.Common.Interfaces.Authentication;
+using DinnerHelper.Application.Common.Interfaces.Persistence;
 using DinnerHelper.Application.Common.Interfaces.Services;
 using DinnerHelper.Infrastructure.Authentication;
+using DinnerHelper.Infrastructure.Persistence;
 using DinnerHelper.Infrastructure.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
@@ -17,6 +19,8 @@ public static class DependencyInjection
         
         services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
         services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
+
+        services.AddScoped<IUserRepository, UserRepository>();
         return services;
     }
 }
