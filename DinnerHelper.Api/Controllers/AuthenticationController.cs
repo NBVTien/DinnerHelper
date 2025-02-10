@@ -18,7 +18,8 @@ public class AuthenticationController : ControllerBase
     [Route("register")]
     public IActionResult Register(RegisterRequest request)
     {
-        var authResult = _authenticationService.Register(request.FirstName, request.LastName, request.Email, request.Password);
+        var authResult =
+            _authenticationService.Register(request.FirstName, request.LastName, request.Email, request.Password);
         
         var response = new AuthenticateResponse(
             authResult.User.Id,
