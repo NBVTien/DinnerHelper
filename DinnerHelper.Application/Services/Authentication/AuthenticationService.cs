@@ -1,6 +1,8 @@
 using DinnerHelper.Application.Common.Interfaces.Authentication;
 using DinnerHelper.Application.Common.Interfaces.Persistence;
+using DinnerHelper.Domain.Common.Errors;
 using DinnerHelper.Domain.Entities;
+using ErrorOr;
 
 namespace DinnerHelper.Application.Services.Authentication;
 
@@ -15,16 +17,16 @@ public class AuthenticationService : IAuthenticationService
         _userRepository = userRepository;
     }
     
-    public AuthenticationResult Login(string username, string password)
+    public ErrorOr<AuthenticationResult> Login(string username, string password)
     {
         if (_userRepository.GetUserByEmail(username) is not User user)
         {
-            throw new Exception("Invalid username or password");
+            return Errors.Authentication.InvalidCredential;
         }
 
         if (user.Password != password)
         {
-            throw new Exception("Invalid username or password");
+            return Errors.Authentication.InvalidCredential;
         }
         
         var token = _jwtTokenGenerator.GenerateToken(user);
@@ -34,11 +36,11 @@ public class AuthenticationService : IAuthenticationService
             token);
     }
 
-    public AuthenticationResult Register(string firstName, string lastName, string email, string password)
+    public ErrorOr<AuthenticationResult> Register(string firstName, string lastName, string email, string password)
     {
         if (_userRepository.GetUserByEmail(email) is not null)
         {
-            throw new Exception("User already exists");
+            return Errors.User.DuplicateEmail;
         }
 
         var user = new User

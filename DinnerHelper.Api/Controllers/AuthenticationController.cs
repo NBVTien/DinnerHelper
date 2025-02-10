@@ -1,5 +1,6 @@
 using DinnerHelper.Application.Services.Authentication;
 using DinnerHelper.Contracts.Authentication;
+using ErrorOr;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DinnerHelper.Api.Controllers;
@@ -20,29 +21,29 @@ public class AuthenticationController : ControllerBase
     {
         var authResult =
             _authenticationService.Register(request.FirstName, request.LastName, request.Email, request.Password);
-        
-        var response = new AuthenticateResponse(
-            authResult.User.Id,
-            authResult.User.FirstName,
-            authResult.User.LastName,
-            authResult.User.Email,
-            authResult.Token);
-        
-        return Ok(response);
+
+        return authResult.MatchFirst(
+            result => Ok(new AuthenticateResponse(
+                result.User.Id,
+                result.User.FirstName,
+                result.User.LastName,
+                result.User.Email,
+                result.Token)),
+            error => Problem(statusCode: StatusCodes.Status409Conflict, title: error.Description));
     }
 
     [Route("login")]
     public IActionResult Login(LoginRequest request)
     {
         var authResult = _authenticationService.Login(request.Email, request.Password);
-        
-        var response = new AuthenticateResponse(
-            authResult.User.Id,
-            authResult.User.FirstName,
-            authResult.User.LastName,
-            authResult.User.Email,
-            authResult.Token); 
-        
-        return Ok(response);
+
+        return authResult.MatchFirst(
+            result => Ok(new AuthenticateResponse(
+                result.User.Id,
+                result.User.FirstName,
+                result.User.LastName,
+                result.User.Email,
+                result.Token)),
+            error => Problem(statusCode: StatusCodes.Status401Unauthorized, title: error.Description));
     }
 }
