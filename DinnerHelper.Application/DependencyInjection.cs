@@ -1,3 +1,9 @@
+using System.Reflection;
+using DinnerHelper.Application.Authentication.Commands.Register;
+using DinnerHelper.Application.Common.Behaviors;
+using DinnerHelper.Application.Services.Authentication;
+using ErrorOr;
+using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -11,6 +17,9 @@ public static class DependencyInjection
         {
             options.RegisterServicesFromAssembly(typeof(DependencyInjection).Assembly);
         });
+        
+        services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidateBehavior<,>));
+        services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         return services;
     }
 }

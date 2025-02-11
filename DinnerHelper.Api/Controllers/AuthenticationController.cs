@@ -7,9 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DinnerHelper.Api.Controllers;
 
-[ApiController]
 [Route("auth")]
-public class AuthenticationController : ControllerBase
+public class AuthenticationController : ApiController
+
 {
     private readonly ISender _sender;
     private readonly IMapper _mapper;
@@ -26,9 +26,12 @@ public class AuthenticationController : ControllerBase
         var command = _mapper.Map<RegisterCommand>(request);
         var authResult = await _sender.Send(command);
         
-        return authResult.MatchFirst( 
+        // return authResult.MatchFirst( 
+        //     result => Ok(_mapper.Map<AuthenticateResponse>(result)),
+        //     error => Problem(statusCode: StatusCodes.Status409Conflict, title: error.Description));
+        return authResult.Match(
             result => Ok(_mapper.Map<AuthenticateResponse>(result)),
-            error => Problem(statusCode: StatusCodes.Status409Conflict, title: error.Description));
+            Problem);
     }
 
     [HttpPost("login")]
@@ -37,8 +40,8 @@ public class AuthenticationController : ControllerBase
         var query = _mapper.Map<LoginQuery>(request);
         var authResult = await _sender.Send(query);
 
-        return authResult.MatchFirst(
+        return authResult.Match(
             result => Ok(_mapper.Map<AuthenticateResponse>(result)),
-            error => Problem(statusCode: StatusCodes.Status401Unauthorized, title: error.Description));
+            Problem);
     }
 }
