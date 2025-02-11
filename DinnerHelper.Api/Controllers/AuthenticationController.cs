@@ -1,6 +1,7 @@
 using DinnerHelper.Application.Authentication.Commands.Register;
 using DinnerHelper.Application.Authentication.Queries.Login;
 using DinnerHelper.Contracts.Authentication;
+using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,41 +12,33 @@ namespace DinnerHelper.Api.Controllers;
 public class AuthenticationController : ControllerBase
 {
     private readonly ISender _sender;
+    private readonly IMapper _mapper;
     
-    public AuthenticationController(ISender sender)
+    public AuthenticationController(ISender sender, IMapper mapper)
     {
         _sender = sender;
+        _mapper = mapper;
     }
     
-    [Route("register")]
+    [HttpPost("register")]
     public async Task<IActionResult> Register(RegisterRequest request)
     {
-        var command = new RegisterCommand(request.FirstName, request.LastName, request.Email, request.Password);
+        var command = _mapper.Map<RegisterCommand>(request);
         var authResult = await _sender.Send(command);
         
         return authResult.MatchFirst( 
-            result => Ok(new AuthenticateResponse(
-                result.User.Id,
-                result.User.FirstName,
-                result.User.LastName,
-                result.User.Email,
-                result.Token)),
+            result => Ok(_mapper.Map<AuthenticateResponse>(result)),
             error => Problem(statusCode: StatusCodes.Status409Conflict, title: error.Description));
     }
 
-    [Route("login")]
+    [HttpPost("login")]
     public async Task<IActionResult> Login(LoginRequest request)
     {
-        var query = new LoginQuery(request.Email, request.Password);
+        var query = _mapper.Map<LoginQuery>(request);
         var authResult = await _sender.Send(query);
 
         return authResult.MatchFirst(
-            result => Ok(new AuthenticateResponse(
-                result.User.Id,
-                result.User.FirstName,
-                result.User.LastName,
-                result.User.Email,
-                result.Token)),
+            result => Ok(_mapper.Map<AuthenticateResponse>(result)),
             error => Problem(statusCode: StatusCodes.Status401Unauthorized, title: error.Description));
     }
 }
