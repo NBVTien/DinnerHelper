@@ -1,6 +1,7 @@
-using DinnerHelper.Application.Services.Authentication;
+using DinnerHelper.Application.Authentication.Commands.Register;
+using DinnerHelper.Application.Authentication.Queries.Login;
 using DinnerHelper.Contracts.Authentication;
-using ErrorOr;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DinnerHelper.Api.Controllers;
@@ -9,20 +10,20 @@ namespace DinnerHelper.Api.Controllers;
 [Route("auth")]
 public class AuthenticationController : ControllerBase
 {
-    private readonly IAuthenticationService _authenticationService;
-
-    public AuthenticationController(IAuthenticationService authenticationService)
+    private readonly ISender _sender;
+    
+    public AuthenticationController(ISender sender)
     {
-        _authenticationService = authenticationService;
+        _sender = sender;
     }
     
     [Route("register")]
-    public IActionResult Register(RegisterRequest request)
+    public async Task<IActionResult> Register(RegisterRequest request)
     {
-        var authResult =
-            _authenticationService.Register(request.FirstName, request.LastName, request.Email, request.Password);
-
-        return authResult.MatchFirst(
+        var command = new RegisterCommand(request.FirstName, request.LastName, request.Email, request.Password);
+        var authResult = await _sender.Send(command);
+        
+        return authResult.MatchFirst( 
             result => Ok(new AuthenticateResponse(
                 result.User.Id,
                 result.User.FirstName,
@@ -33,9 +34,10 @@ public class AuthenticationController : ControllerBase
     }
 
     [Route("login")]
-    public IActionResult Login(LoginRequest request)
+    public async Task<IActionResult> Login(LoginRequest request)
     {
-        var authResult = _authenticationService.Login(request.Email, request.Password);
+        var query = new LoginQuery(request.Email, request.Password);
+        var authResult = await _sender.Send(query);
 
         return authResult.MatchFirst(
             result => Ok(new AuthenticateResponse(

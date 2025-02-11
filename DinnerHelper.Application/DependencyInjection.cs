@@ -1,4 +1,4 @@
-using DinnerHelper.Application.Services.Authentication;
+using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace DinnerHelper.Application;
@@ -7,7 +7,10 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
-        services.AddScoped<IAuthenticationService, AuthenticationService>();
+        services.AddMediatR(options =>
+        {
+            options.RegisterServicesFromAssembly(typeof(DependencyInjection).Assembly);
+        });
         return services;
     }
 }
