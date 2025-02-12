@@ -1,0 +1,9 @@
+@host=http://localhost:5085
+@jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhMTRlZWQ3NC1mOGZiLTQxMDktYWVmOC05YTg4ODYwNTkwNjciLCJnaXZlbl9uYW1lIjoiVnVvbmcgVGllbiIsImZhbWlseV9uYW1lIjoiTmd1eWVuIEJ1aSIsImp0aSI6IjI5OTBmMGIzLTQ5NWUtNDJhYy04NmMxLTNhY2U5ZDBhMjI2ZSIsImV4cCI6MTczOTM4MDc2MSwiaXNzIjoiRGlubmVySGVscGVyIiwiYXVkIjoiRGlubmVySGVscGVyIn0.oTzM-7YMCwysewcviksIBgmW5MQFsDaouSSbCJX1dAc
+
+### Get all dinners
+// @no-log
+GET {{host}}/dinners
+Authorization: Bearer {{jwt}}
+Accept: application/json
+Content-Type: application/json
