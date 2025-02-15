@@ -8,7 +8,7 @@ using DinnerHelper.Domain.MenuReview.ValueObjects;
 namespace DinnerHelper.Domain.MenuReview;
 
 // NOTE: MenuReview is done, for now.
-public class MenuReview : AggregateRoot<MenuReviewId>
+public sealed class MenuReview : AggregateRoot<MenuReviewId>
 {
     public float Rating { get; }
     public string Comment { get; }
