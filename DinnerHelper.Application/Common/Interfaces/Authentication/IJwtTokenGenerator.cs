@@ -1,4 +1,4 @@
-using DinnerHelper.Domain.Entities;
+using DinnerHelper.Domain.User;
 
 namespace DinnerHelper.Application.Common.Interfaces.Authentication;
 

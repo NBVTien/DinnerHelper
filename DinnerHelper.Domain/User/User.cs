@@ -1,4 +1,4 @@
-namespace DinnerHelper.Domain.Entities;
+namespace DinnerHelper.Domain.User;
 
 public class User
 {

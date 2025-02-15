@@ -2,7 +2,7 @@ using DinnerHelper.Application.Common.Interfaces.Authentication;
 using DinnerHelper.Application.Common.Interfaces.Persistence;
 using DinnerHelper.Application.Services.Authentication;
 using DinnerHelper.Domain.Common.Errors;
-using DinnerHelper.Domain.Entities;
+using DinnerHelper.Domain.User;
 using ErrorOr;
 using MediatR;
 

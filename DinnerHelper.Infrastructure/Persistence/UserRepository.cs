@@ -1,5 +1,5 @@
 using DinnerHelper.Application.Common.Interfaces.Persistence;
-using DinnerHelper.Domain.Entities;
+using DinnerHelper.Domain.User;
 
 namespace DinnerHelper.Infrastructure.Persistence;
 
