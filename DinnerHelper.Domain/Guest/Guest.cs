@@ -1,28 +1,35 @@
+using DinnerHelper.Domain.Bill.ValueObjects;
 using DinnerHelper.Domain.Common.Models;
 using DinnerHelper.Domain.Dinner.ValueObjects;
-using DinnerHelper.Domain.Host.ValueObjects;
-using DinnerHelper.Domain.Menu.ValueObjects;
+using DinnerHelper.Domain.Guest.Entities;
+using DinnerHelper.Domain.Guest.ValueObjects;
+using DinnerHelper.Domain.MenuReview.ValueObjects;
 using DinnerHelper.Domain.User.ValueObjects;
 
-namespace DinnerHelper.Domain.Host;
+namespace DinnerHelper.Domain.Guest;
 
-// TODO: Host is done, for now.
-public sealed class Host : AggregateRoot<HostId>
+public sealed class Guest : AggregateRoot<GuestId>
 {
-    private readonly List<MenuId> _menuIds = new();
-    private readonly List<DinnerId> _dinnerIds = new(); 
+    private readonly List<DinnerId> _dinnerIds = [];
+    private readonly List<BillId> _billIds = [];
+    private readonly List<MenuReviewId> _menuReviewIds = [];
+    private readonly List<GuestRating> _ratings = [];
     
     public string FirstName { get; }
     public string LastName { get; }
     public string ProfileImage { get; }
     public float AverageRating { get; }
     public UserId UserId { get; }
-    public IReadOnlyList<MenuId> MenuIds => _menuIds.AsReadOnly();
+    
     public IReadOnlyList<DinnerId> DinnerIds => _dinnerIds.AsReadOnly();
+    public IReadOnlyList<BillId> BillIds => _billIds.AsReadOnly();
+    public IReadOnlyList<MenuReviewId> MenuReviewIds => _menuReviewIds.AsReadOnly();
+    public IReadOnlyList<GuestRating> Ratings => _ratings.AsReadOnly();
+    
     public DateTime CreatedDateTime { get; }
     public DateTime UpdatedDateTime { get; }
     
-    private Host(HostId id,
+    private Guest(GuestId id,
         string firstName,
         string lastName,
         string profileImage,
@@ -41,14 +48,14 @@ public sealed class Host : AggregateRoot<HostId>
         UpdatedDateTime = updatedDateTime;
     }
     
-    public static Host Create(
+    public static Guest Create(
         string firstName,
         string lastName,
         string profileImage,
         float averageRating,
         UserId userId)
     {
-        return new Host(HostId.CreateUnique(),
+        return new Guest(GuestId.CreateUnique(),
             firstName,
             lastName,
             profileImage,
