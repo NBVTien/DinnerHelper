@@ -1,5 +1,4 @@
 using DinnerHelper.Application.Authentication.Commands.Register;
-using DinnerHelper.Application.Services.Authentication;
 using ErrorOr;
 using FluentValidation;
 using MediatR;

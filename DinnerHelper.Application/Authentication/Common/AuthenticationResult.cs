@@ -1,6 +1,6 @@
 using DinnerHelper.Domain.User;
 
-namespace DinnerHelper.Application.Services.Authentication;
+namespace DinnerHelper.Application.Authentication.Common;
 
 public record AuthenticationResult(
     User User,

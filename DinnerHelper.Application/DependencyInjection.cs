@@ -1,7 +1,6 @@
 using System.Reflection;
 using DinnerHelper.Application.Authentication.Commands.Register;
 using DinnerHelper.Application.Common.Behaviors;
-using DinnerHelper.Application.Services.Authentication;
 using ErrorOr;
 using FluentValidation;
 using MediatR;

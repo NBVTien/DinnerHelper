@@ -1,6 +1,6 @@
+using DinnerHelper.Application.Authentication.Common;
 using DinnerHelper.Application.Common.Interfaces.Authentication;
 using DinnerHelper.Application.Common.Interfaces.Persistence;
-using DinnerHelper.Application.Services.Authentication;
 using DinnerHelper.Domain.Common.Errors;
 using DinnerHelper.Domain.User;
 using MediatR;

@@ -1,4 +1,4 @@
-using DinnerHelper.Application.Services.Authentication;
+using DinnerHelper.Application.Authentication.Common;
 using ErrorOr;
 using MediatR;
 
