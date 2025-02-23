@@ -1,3 +1,4 @@
+using System.Security.AccessControl;
 using DinnerHelper.Domain.Common.Models;
 using DinnerHelper.Domain.Dinner.ValueObjects;
 using DinnerHelper.Domain.Host.ValueObjects;
@@ -10,7 +11,7 @@ namespace DinnerHelper.Domain.Menu;
 // NOTE: Menu is done, for now.
 public sealed class Menu : AggregateRoot<MenuId>
 {
-    private readonly List<MenuSection> _sections = [];
+    private readonly List<MenuSection> _sections;
     private readonly List<DinnerId> _dinnerIds = [];
     private readonly List<MenuReviewId> _menuReviewIds = [];
     
@@ -29,6 +30,7 @@ public sealed class Menu : AggregateRoot<MenuId>
         string name,
         string description,
         float averageRating,
+        List<MenuSection> sections,
         HostId hostId,
         DateTime createdDateTime,
         DateTime updatedDateTime) : base(id)
@@ -36,6 +38,7 @@ public sealed class Menu : AggregateRoot<MenuId>
         Name = name;
         Description = description;
         HostId = hostId;
+        _sections = sections;
         AverageRating = averageRating;
         CreatedDateTime = createdDateTime;
         UpdatedDateTime = updatedDateTime;
@@ -44,14 +47,15 @@ public sealed class Menu : AggregateRoot<MenuId>
     public static Menu Create(
         string name,
         string description,
-        float averageRating,
+        List<MenuSection>? sections,
         HostId hostId)
     {
         return new Menu(
             MenuId.CreateUnique(),
             name,
             description,
-            averageRating,
+            0,
+            sections ?? [],
             hostId,
             DateTime.UtcNow,
             DateTime.UtcNow);

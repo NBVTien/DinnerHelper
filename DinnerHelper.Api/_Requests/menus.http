@@ -1,0 +1,29 @@
+@host=http://localhost:5085
+@jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyMzQxMjhlOS01ODM3LTRhMDAtYWU5YS0xNmYxMTUzZjEyZWYiLCJnaXZlbl9uYW1lIjoiVnVvbmcgVGllbiIsImZhbWlseV9uYW1lIjoiTmd1eWVuIEJ1aSIsImp0aSI6IjMwZTQ3NjRmLTlmNjEtNGIxMC1iNjc3LTIxMGE2NGQ2YzNhOSIsImV4cCI6MTc0MDMzNzQ1OCwiaXNzIjoiRGlubmVySGVscGVyIiwiYXVkIjoiRGlubmVySGVscGVyIn0.9KZGmWdIBiqaM8L3ATGUKSas271z-YZmxgLzzdVq0-w
+
+
+
+### Create menu
+// @no-log
+POST {{host}}/hosts/80b73fe4-b0f0-4b6d-b6f9-dfb038c5f5c4/menus
+Authorization: Bearer {{jwt}}
+Accept: application/json
+Content-Type: application/json
+
+{
+    "name": "Hot Dinner",
+    "description": "A dinner that is hot",
+    "sections": [
+      {
+        "name": "Main Course",
+        "description": "The main course",
+        "items": [
+          {
+            "name": "Steak",
+            "description": "A steak"
+          }
+        ]
+      }
+    ]
+}
+
